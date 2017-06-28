@@ -50,6 +50,7 @@
     "lodash.pick": "^4.2.0",
     "postcss-loader": "1.1.0",
     "qs": "^6.1.0",
+    "react-inspector":"2.1.0",
     "react-modal": "^1.2.0",
     "redux": "^3.5.2",
     "request": "^2.74.0",
