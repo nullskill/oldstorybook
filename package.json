@@ -23,11 +23,11 @@
   },
   "dependencies": {
     "@kadira/react-split-pane": "^1.4.0",
-    "@kadira/storybook-addon-actions": "^1.0.2",
+    "@kadira/storybook-addon-actions": "github:nullskill/storybook-addon-actions",
     "@kadira/storybook-addon-links": "^1.0.0",
     "@kadira/storybook-addons": "^1.5.0",
     "@kadira/storybook-channel-postmsg": "^2.0.1",
-    "@kadira/storybook-ui": "^3.10.1",
+    "@kadira/storybook-ui": "github:nullskill/storybook-ui",
     "airbnb-js-shims": "^1.0.1",
     "autoprefixer": "^6.3.7",
     "babel-core": "^6.11.4",
