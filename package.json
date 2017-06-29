@@ -22,7 +22,7 @@
     "postpublish": "greenkeeper-postpublish"
   },
   "dependencies": {
-    "@kadira/react-split-pane": "^1.4.0",
+    "@kadira/react-split-pane": "github:nullskill/react-split-pane",
     "@kadira/storybook-addon-actions": "github:nullskill/storybook-addon-actions",
     "@kadira/storybook-addon-links": "^1.0.0",
     "@kadira/storybook-addons": "^1.5.0",
