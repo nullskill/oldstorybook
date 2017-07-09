@@ -9,7 +9,7 @@ import { includePaths } from './config/utils';
 const logger = console;
 
 export function addJsonLoaderIfNotAvailable(config) {
-  const jsonLoaderExists = config.module.loaders.reduce(
+  const jsonLoaderExists = config.module.rules.reduce(
     (value, loader) => {
       return value || [].concat(loader.test).some((matcher) => {
         const isRegex = matcher instanceof RegExp;
@@ -27,7 +27,7 @@ export function addJsonLoaderIfNotAvailable(config) {
   );
 
   if (!jsonLoaderExists) {
-    config.module.loaders.push({
+    config.module.rules.push({
       test: /\.json$/,
       include: includePaths,
       loader: require.resolve('json-loader'),
@@ -91,18 +91,12 @@ export default function (configType, baseConfig, configDir) {
     // Override with custom devtool if provided
     devtool: customConfig.devtool || config.devtool,
     // We need to use our and custom plugins.
-    plugins: [
-      ...config.plugins,
-      ...customConfig.plugins || [],
-    ],
+    plugins: [...config.plugins, ...(customConfig.plugins || [])],
     module: {
       ...config.module,
-      // We need to use our and custom loaders.
+      // We need to use our and custom rules.
       ...customConfig.module,
-      loaders: [
-        ...config.module.loaders,
-        ...customConfig.module.loaders || [],
-      ],
+      rules: [...config.module.rules, ...(customConfig.module.rules || [])],
     },
     resolve: {
       ...config.resolve,
