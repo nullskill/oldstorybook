@@ -42,7 +42,7 @@ export default function (configType, baseConfig, configDir) {
   const config = baseConfig;
 
   const babelConfig = loadBabelConfig(configDir);
-  config.module.loaders[0].query = babelConfig;
+  config.module.rules[0].query = babelConfig;
 
   // Check whether a config.js file exists inside the storybook
   // config directory and throw an error if it's not.
