@@ -1,18 +1,41 @@
+// import webpack from 'webpack';
 import autoprefixer from 'autoprefixer';
 import { includePaths } from '../utils';
 
 // Add a default custom config which is similar to what React Create App does.
-module.exports = (storybookBaseConfig) => {
+module.exports = storybookBaseConfig => {
   const newConfig = { ...storybookBaseConfig };
-  newConfig.module.loaders = [
-    ...storybookBaseConfig.module.loaders,
+
+  newConfig.module.rules = [
+    ...storybookBaseConfig.module.rules,
     {
-      test: /\.css?$/,
-      include: includePaths,
-      loaders: [
+      test: /\.css$/,
+      use: [
         require.resolve('style-loader'),
-        `${require.resolve('css-loader')}?importLoaders=1`,
-        require.resolve('postcss-loader'),
+        {
+          loader: require.resolve('css-loader'),
+          options: {
+            importLoaders: 1,
+          },
+        },
+        {
+          loader: require.resolve('postcss-loader'),
+          options: {
+            ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
+            plugins: () => [
+              require('postcss-flexbugs-fixes'), // eslint-disable-line
+              autoprefixer({
+                browsers: [
+                  '>1%',
+                  'last 4 versions',
+                  'Firefox ESR',
+                  'not ie < 9', // React doesn't support IE8 anyway
+                ],
+                flexbox: 'no-2009',
+              }),
+            ],
+          },
+        },
       ],
     },
     {
@@ -38,19 +61,6 @@ module.exports = (storybookBaseConfig) => {
       },
     },
   ];
-
-  newConfig.postcss = () => {
-    return [
-      autoprefixer({
-        browsers: [
-          '>1%',
-          'last 4 versions',
-          'Firefox ESR',
-          'not ie < 9',
-        ],
-      }),
-    ];
-  };
 
   newConfig.resolve.alias = {
     ...storybookBaseConfig.resolve.alias,

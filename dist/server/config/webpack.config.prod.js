@@ -23,7 +23,7 @@ exports.default = function () {
       // relative URLs works always.
       publicPath: ''
     },
-    plugins: [new _webpack2.default.DefinePlugin((0, _utils.loadEnv)({ production: true })), new _webpack2.default.optimize.DedupePlugin(), new _webpack2.default.optimize.UglifyJsPlugin({
+    plugins: [new _webpack2.default.DefinePlugin((0, _utils.loadEnv)({ production: true })), new _webpack2.default.optimize.UglifyJsPlugin({
       compress: {
         screw_ie8: true,
         warnings: false
@@ -35,10 +35,10 @@ exports.default = function () {
       }
     })],
     module: {
-      loaders: [{
+      rules: [{
         test: /\.jsx?$/,
         loader: require.resolve('babel-loader'),
-        query: _babelProd2.default,
+        query: _babel2.default,
         include: _utils.includePaths,
         exclude: _utils.excludePaths
       }]
@@ -46,22 +46,12 @@ exports.default = function () {
     resolve: {
       // Since we ship with json-loader always, it's better to move extensions to here
       // from the default config.
-      extensions: ['.js', '.json', '.jsx', ''],
+      extensions: ['.js', '.json', '.jsx'],
       // Add support to NODE_PATH. With this we could avoid relative path imports.
       // Based on this CRA feature: https://github.com/facebookincubator/create-react-app/issues/253
-      fallback: _utils.nodePaths,
-      alias: {
-        // This is to add addon support for NPM2
-        '@kadira/storybook-addons': require.resolve('@kadira/storybook-addons')
-      }
+      modules: ['node_modules'].concat(_utils.nodePaths)
     }
   };
-
-  // Webpack 2 doesn't have a OccurenceOrderPlugin plugin in the production mode.
-  // But webpack 1 has it. That's why we do this.
-  if (_utils.OccurenceOrderPlugin) {
-    config.plugins.unshift(new _utils.OccurenceOrderPlugin());
-  }
 
   return config;
 };
@@ -74,9 +64,9 @@ var _webpack = require('webpack');
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
-var _babelProd = require('./babel.prod.js');
+var _babel = require('./babel.prod');
 
-var _babelProd2 = _interopRequireDefault(_babelProd);
+var _babel2 = _interopRequireDefault(_babel);
 
 var _utils = require('./utils');
 

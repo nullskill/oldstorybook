@@ -17,12 +17,30 @@ var _utils = require('../utils');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Add a default custom config which is similar to what React Create App does.
+// import webpack from 'webpack';
 module.exports = function (storybookBaseConfig) {
   var newConfig = (0, _extends3.default)({}, storybookBaseConfig);
-  newConfig.module.loaders = [].concat((0, _toConsumableArray3.default)(storybookBaseConfig.module.loaders), [{
-    test: /\.css?$/,
-    include: _utils.includePaths,
-    loaders: [require.resolve('style-loader'), require.resolve('css-loader') + '?importLoaders=1', require.resolve('postcss-loader')]
+
+  newConfig.module.rules = [].concat((0, _toConsumableArray3.default)(storybookBaseConfig.module.rules), [{
+    test: /\.css$/,
+    use: [require.resolve('style-loader'), {
+      loader: require.resolve('css-loader'),
+      options: {
+        importLoaders: 1
+      }
+    }, {
+      loader: require.resolve('postcss-loader'),
+      options: {
+        ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
+        plugins: function plugins() {
+          return [require('postcss-flexbugs-fixes'), // eslint-disable-line
+          (0, _autoprefixer2.default)({
+            browsers: ['>1%', 'last 4 versions', 'Firefox ESR', 'not ie < 9'],
+            flexbox: 'no-2009'
+          })];
+        }
+      }
+    }]
   }, {
     test: /\.json$/,
     include: _utils.includePaths,
@@ -43,12 +61,6 @@ module.exports = function (storybookBaseConfig) {
       name: 'static/media/[name].[hash:8].[ext]'
     }
   }]);
-
-  newConfig.postcss = function () {
-    return [(0, _autoprefixer2.default)({
-      browsers: ['>1%', 'last 4 versions', 'Firefox ESR', 'not ie < 9']
-    })];
-  };
 
   newConfig.resolve.alias = (0, _extends3.default)({}, storybookBaseConfig.resolve.alias, {
     // This is to support NPM2

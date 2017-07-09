@@ -50,7 +50,7 @@
     "lodash.pick": "^4.2.0",
     "postcss-loader": "1.1.0",
     "qs": "^6.1.0",
-    "react-inspector":"2.1.0",
+    "react-inspector": "2.1.0",
     "react-modal": "^1.2.0",
     "redux": "^3.5.2",
     "request": "^2.74.0",
@@ -59,9 +59,9 @@
     "style-loader": "0.13.1",
     "url-loader": "^0.5.7",
     "uuid": "^2.0.3",
-    "webpack": "^1.13.1",
-    "webpack-dev-middleware": "^1.6.0",
-    "webpack-hot-middleware": "^2.13.2"
+    "webpack": "^2.5.1 || ^3.0.0",
+    "webpack-dev-middleware": "^1.10.2",
+    "webpack-hot-middleware": "^2.18.0"
   },
   "peerDependencies": {
     "react": "^15.6.1",

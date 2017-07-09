@@ -1,24 +1,12 @@
 import path from 'path';
 import webpack from 'webpack';
-import babelLoaderConfig from './babel.prod.js';
-import {
-  OccurenceOrderPlugin,
-  includePaths,
-  excludePaths,
-  loadEnv,
-  nodePaths,
-} from './utils';
+import babelLoaderConfig from './babel.prod';
+import { includePaths, excludePaths, loadEnv, nodePaths } from './utils';
 
 export default function () {
   const entries = {
-    preview: [
-      require.resolve('./polyfills'),
-      require.resolve('./globals'),
-    ],
-    manager: [
-      require.resolve('./polyfills'),
-      path.resolve(__dirname, '../../client/manager'),
-    ],
+    preview: [require.resolve('./polyfills'), require.resolve('./globals')],
+    manager: [require.resolve('./polyfills'), path.resolve(__dirname, '../../client/manager')],
   };
 
   const config = {
@@ -36,7 +24,6 @@ export default function () {
     },
     plugins: [
       new webpack.DefinePlugin(loadEnv({ production: true })),
-      new webpack.optimize.DedupePlugin(),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           screw_ie8: true,
@@ -50,7 +37,7 @@ export default function () {
       }),
     ],
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.jsx?$/,
           loader: require.resolve('babel-loader'),
@@ -63,22 +50,12 @@ export default function () {
     resolve: {
       // Since we ship with json-loader always, it's better to move extensions to here
       // from the default config.
-      extensions: ['.js', '.json', '.jsx', ''],
+      extensions: ['.js', '.json', '.jsx'],
       // Add support to NODE_PATH. With this we could avoid relative path imports.
       // Based on this CRA feature: https://github.com/facebookincubator/create-react-app/issues/253
-      fallback: nodePaths,
-      alias: {
-        // This is to add addon support for NPM2
-        '@kadira/storybook-addons': require.resolve('@kadira/storybook-addons'),
-      },
+      modules: ['node_modules'].concat(nodePaths),
     },
   };
-
-  // Webpack 2 doesn't have a OccurenceOrderPlugin plugin in the production mode.
-  // But webpack 1 has it. That's why we do this.
-  if (OccurenceOrderPlugin) {
-    config.plugins.unshift(new OccurenceOrderPlugin());
-  }
 
   return config;
 }
